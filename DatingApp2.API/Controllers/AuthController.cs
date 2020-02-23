@@ -45,8 +45,8 @@ namespace DatingApp2.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserForRegisterDTO user)
-        {
+        public async Task<IActionResult> Login(UserLoginDTO user)
+        {            
             var userFromRepo = await repo.Login(user.Username.ToLower(), user.Password);
 
             if(userFromRepo == null)
