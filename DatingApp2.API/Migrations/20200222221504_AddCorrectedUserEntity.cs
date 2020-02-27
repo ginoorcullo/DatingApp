@@ -8,11 +8,11 @@ namespace DatingApp2.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Value",
-                table: "Value");
+                name: "PK_Values",
+                table: "Values");
 
             migrationBuilder.RenameTable(
-                name: "Value",
+                name: "Values",
                 newName: "Values");
 
             migrationBuilder.AddPrimaryKey(
@@ -47,11 +47,11 @@ namespace DatingApp2.API.Migrations
 
             migrationBuilder.RenameTable(
                 name: "Values",
-                newName: "Value");
+                newName: "Values");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Value",
-                table: "Value",
+                name: "PK_Values",
+                table: "Values",
                 column: "Id");
         }
     }

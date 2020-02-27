@@ -1,6 +1,6 @@
-namespace DatingApp2.API.Models
+﻿namespace DatingApp2.API.Models
 {
-    public class Value
+    public class Values
     {
         public int Id { get; set; }
         public string Name { get; set; }
