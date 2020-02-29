@@ -9,8 +9,8 @@ import { HttpClient } from '@angular/common/http';
 export class HomeComponent implements OnInit {
 
   registerMode: boolean = false;
-  
-  
+
+
   constructor() { }
 
   ngOnInit(): void {
