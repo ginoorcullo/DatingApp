@@ -7,22 +7,28 @@ import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { appRoutes } from './routes';
+
+import { MemberListResolver } from './_resolvers/member-list.resolver';
+import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
+import { MemberEditResolver } from './_resolvers/member-edit.resolver';
+
+import { AuthService } from './_services/auth.service';
+import { ErrorInterceptorProvider } from './_services/error.interceptors';
+import { AuthGuard } from './_guards/auth.guard';
+import { PreventUnsaved } from './_guards/prevent-unsaved.guard';
 
 import { AppComponent } from './app.component';
-import { ValueComponent } from './value/value.component';
-import { NavComponent } from './nav/nav.component';
-import { AuthService } from './_services/auth.service';
 import { HomeComponent } from './home/home.component';
+import { NavComponent } from './nav/nav.component';
+import { ValueComponent } from './value/value.component';
 import { RegisterComponent } from './register/register.component';
-import { ErrorInterceptorProvider } from './_services/error.interceptors';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
-import { appRoutes } from './routes';
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
-import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
-import { MemberListResolver } from './_resolvers/member-list.resolver';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -39,7 +45,8 @@ export function tokenGetter() {
     MemberCardComponent,
     ListComponent,
     MessagesComponent,
-    MemberDetailComponent
+    MemberDetailComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -60,9 +67,12 @@ export function tokenGetter() {
   ],
   providers: [
     AuthService,
+    AuthGuard,
+    PreventUnsaved,
     ErrorInterceptorProvider,
     MemberDetailResolver,
-    MemberListResolver
+    MemberListResolver,
+    MemberEditResolver
   ],
   bootstrap: [AppComponent]
 })

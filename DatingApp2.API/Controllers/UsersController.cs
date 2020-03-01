@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp2.API.Data.BaseRepository;
 using DatingApp2.API.DTO;
+using DatingApp2.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -38,10 +41,20 @@ namespace DatingApp2.API.Controllers
             return Ok(resultToReturn);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> AddUser()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UserForEditDTO user)
         {
-            return Ok();
+            var result = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if(id != int.Parse(result))
+                return Unauthorized();
+            
+            var userEntity = await datingRepository.GetUser(id);
+            mapper.Map(user, userEntity);
+
+            if(await datingRepository.SaveAll())
+                return NoContent();
+
+            throw new Exception($"Updating user with id {id} failed on save.");
         }
     }
 }
