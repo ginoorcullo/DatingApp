@@ -32,7 +32,7 @@ export class AuthService {
           if (user) {
             localStorage.setItem('token', user.token);
             localStorage.setItem('user', JSON.stringify(user.userDetails));
-            this.decodedToken = this.jwtHelper.decodeToken(user.token);          
+            this.decodedToken = this.jwtHelper.decodeToken(user.token);
             this.currentUser = user.userDetails;
             this.changeMemberPhoto(this.currentUser.photoURL);
           }
@@ -66,7 +66,7 @@ export class AuthService {
   updateLocalUser() {
     localStorage.setItem('user', JSON.stringify(this.currentUser));
   }
-  
+
   userFromDecodedToken() {
     const { nameid } = this.decodedToken;
     return {

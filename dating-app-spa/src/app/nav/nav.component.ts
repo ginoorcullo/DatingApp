@@ -22,12 +22,12 @@ export class NavComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInModel = this.authService.userFromDecodedToken();
-    this.authService.currentPhotoUrl.subscribe(currPhotoUrl => this.photoUrl = currPhotoUrl);
   }
 
   login() {
     this.authService.login(this.model).subscribe(next => {
       this.loggedInModel = this.authService.userFromDecodedToken();
+      this.authService.currentPhotoUrl.subscribe(currPhotoUrl => this.photoUrl = currPhotoUrl);
       this.alertify.success('logged in successfully');
     }, error => {
       this.alertify.error(error);

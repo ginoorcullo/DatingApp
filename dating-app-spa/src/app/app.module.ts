@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Pipe } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,6 +10,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { appRoutes } from './routes';
 import { FileUploadModule } from 'ng2-file-upload';
+// import { TimeAgoPipe } from 'time-ago-pipe';
+import { TimeagoModule } from 'ngx-timeago';
 
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
@@ -36,6 +38,14 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
+
+// tslint:disable-next-line: use-pipe-transform-interface
+// @Pipe({
+//   name: 'timeAgo',
+//   pure: false
+// })
+// export class TimeAgoExtendsPipe extends TimeAgoPipe {}
+
 
 @NgModule({
   declarations: [
@@ -64,6 +74,7 @@ export function tokenGetter() {
     RouterModule.forRoot(appRoutes),
     NgxGalleryModule,
     FileUploadModule,
+    TimeagoModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter,
