@@ -12,6 +12,8 @@ import { appRoutes } from './routes';
 import { FileUploadModule } from 'ng2-file-upload';
 // import { TimeAgoPipe } from 'time-ago-pipe';
 import { TimeagoModule } from 'ngx-timeago';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
@@ -75,6 +77,8 @@ export function tokenGetter() {
     NgxGalleryModule,
     FileUploadModule,
     TimeagoModule.forRoot(),
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter,
