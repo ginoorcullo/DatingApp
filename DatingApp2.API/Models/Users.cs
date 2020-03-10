@@ -36,5 +36,7 @@ namespace DatingApp2.API.Models
         [Column(TypeName="varchar(50)")]        
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
+        public ICollection<Like> Likers {get; set;}
+        public ICollection<Like> Likees {get; set;}
     }
 }

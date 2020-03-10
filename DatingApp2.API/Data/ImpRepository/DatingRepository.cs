@@ -27,6 +27,11 @@ namespace DatingApp2.API.Data.ImpRepository
             context.Remove(entity);
         }
 
+        public async Task<Like> GetLike(int userId, int recipientId)
+        {
+            return await context.Likes.FirstOrDefaultAsync(u => u.LikerId == userId && u.LikeeId == recipientId);
+        }
+
         public async Task<Photo> GetPhoto(int id)
         {
             var photo = await context.Photos.FirstOrDefaultAsync(x => x.Id == id);
@@ -41,7 +46,7 @@ namespace DatingApp2.API.Data.ImpRepository
 
         public async Task<Photo> GetUserMainPhoto(int userId)
         {
-            var photo = await context.Photos.Where(x => x.UsersId == userId).FirstOrDefaultAsync(p => p.IsMain);                
+            var photo = await context.Photos.Where(x => x.UsersId == userId).FirstOrDefaultAsync(p => p.IsMain);
             return photo;
         }
 
@@ -52,14 +57,26 @@ namespace DatingApp2.API.Data.ImpRepository
             users = users.Where(u => u.Id != userParams.UserId)
                         .Where(u => u.Gender == userParams.Gender);
 
-            if(userParams.MinAge != 18 || userParams.MaxAge != 99)
+            if (userParams.Likees)
+            {
+                var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
+                users = users.Where(u => userLikers.Contains(u.Id));
+            }
+
+            if (userParams.Likers)
+            {
+                var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
+                users = users.Where(u => userLikees.Contains(u.Id));
+            }
+
+            if (userParams.MinAge != 18 || userParams.MaxAge != 99)
             {
                 var minDOB = DateTime.Today.AddYears(-userParams.MaxAge - 1);
                 var maxDOB = DateTime.Today.AddYears(-userParams.MinAge);
                 users = users.Where(u => u.DateOfBirth >= minDOB && u.DateOfBirth <= maxDOB);
             }
 
-            if(!String.IsNullOrEmpty(userParams.OrderBy))
+            if (!String.IsNullOrEmpty(userParams.OrderBy))
             {
                 switch (userParams.OrderBy)
                 {
@@ -78,6 +95,24 @@ namespace DatingApp2.API.Data.ImpRepository
         public async Task<bool> SaveAll()
         {
             return await context.SaveChangesAsync() > 0;
+        }
+
+        private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
+        {
+            var user = await context.Users
+                .Include(x => x.Likers)
+                .Include(x => x.Likees)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (likers)
+            {
+                return user.Likers.Where(u => u.LikeeId == id).Select(u => u.LikerId);
+            }
+            else
+            {
+                return user.Likees.Where(u => u.LikerId == id).Select(u => u.LikeeId);
+            }
+
         }
     }
 }

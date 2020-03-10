@@ -18,6 +18,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
+import { ListsResolver } from './_resolvers/lists.resolver';
 
 import { AuthService } from './_services/auth.service';
 import { ErrorInterceptorProvider } from './_services/error.interceptors';
@@ -94,7 +95,8 @@ export function tokenGetter() {
     ErrorInterceptorProvider,
     MemberDetailResolver,
     MemberListResolver,
-    MemberEditResolver
+    MemberEditResolver,
+    ListsResolver
   ],
   bootstrap: [AppComponent]
 })

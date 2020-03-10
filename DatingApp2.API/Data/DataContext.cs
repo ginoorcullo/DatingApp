@@ -33,5 +33,11 @@ namespace DatingApp2.API.Data
         public DbSet<Values> Values { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<Like> Likes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.BuildLikes();
+        }
     }
 }
