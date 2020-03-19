@@ -4,7 +4,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
 import { PaginatedResult } from '../_models/pagination';
-import { map } from 'rxjs/operators';
+import { map, subscribeOn } from 'rxjs/operators';
+import { Message } from '../_models/message';
+import { JsonPipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +37,7 @@ export class UserService {
     if (likesParams === 'Likers') {
       params = params.append('Likers', 'true');
     }
-    debugger;
+
     if (likesParams === 'Likees') {
       params = params.append('Likees', 'true');
     }
@@ -73,4 +75,44 @@ export class UserService {
     return this.http.post(this.baseUrl + id + '/like/' + recipientId, {});
   }
 
+  getMessages(userId: number, page?, itemsPaerPage?, messageContainer?) {
+    const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
+    let params = new HttpParams();
+
+    params = params.append('messageContainer', messageContainer);
+    if (page !== null && itemsPaerPage !== null) {
+      params = params.append('pageNumber', page);
+      params = params.append('pageSize', itemsPaerPage);
+    }
+
+    return this.http.get<Message[]>(this.baseUrl + userId + '/messages/', { observe: 'response', params })
+      .pipe(
+        map(response => {
+          paginatedResult.result = response.body;
+          if (response.headers.get('Pagination') !== null) {
+            paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+          }
+
+          return paginatedResult;
+        })
+      );
+  }
+
+  getMessageThread(id: number, recipientId: number) {
+    return this.http.get<Message[]>(this.baseUrl + id + '/messages/thread/' + recipientId);
+  }
+
+  sendMessage(id: number, message: Message) {
+    return this.http.post(this.baseUrl + id + '/messages', message);
+  }
+
+  deleteMessage(id: number, userId: number) {
+    return this.http.delete(this.baseUrl + userId + '/messages/' + id, {});
+  }
+
+  markAsRead(id: number, userId: number) {
+    debugger;
+    this.http.post(this.baseUrl + userId + '/messages/' + id + '/read', {})
+      .subscribe();
+  }
 }

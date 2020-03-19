@@ -22,6 +22,7 @@ export class NavComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInModel = this.authService.userFromDecodedToken();
+    this.authService.currentPhotoUrl.subscribe(currPhotoUrl => this.photoUrl = currPhotoUrl);
   }
 
   login() {

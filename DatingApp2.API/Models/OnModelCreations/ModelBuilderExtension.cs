@@ -29,6 +29,30 @@ namespace DatingApp2.API.Models
                 .OnDelete(DeleteBehavior.Restrict);
         }
 
+        /// <summary>
+        /// Builds the Message model.
+        /// </summary>
+        /// <param name="builder"></param>
+        public static void BuildMessages(this ModelBuilder builder)
+        {
+            /* To customize primary key if other naming convention is preferred instead of 'Id'*/
+            // builder.Entity<Message>()
+            //     .HasKey(x => x.MessageId);
+            
+            builder.Entity<Message>()
+                .Property(m => m.Content).HasColumnType("NVARCHAR(MAX)");
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Sender)
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            builder.Entity<Message>()
+                .HasOne(m => m.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+        }
         
     }
 }
