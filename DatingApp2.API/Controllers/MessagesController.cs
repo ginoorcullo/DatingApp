@@ -144,7 +144,10 @@ namespace DatingApp2.API.Controllers
                 return NoContent();
             
             throw new Exception("Error occurred in reading message");
+<<<<<<< HEAD
             
+=======
+>>>>>>> d593aa6bad0e6a1063b082db70dd33f4a6fd722d
         }
     }
 }
